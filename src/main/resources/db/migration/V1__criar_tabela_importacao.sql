@@ -1,0 +1,6 @@
+CREATE TABLE importacao (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nome_arquivo VARCHAR(255),
+    status VARCHAR(50),
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
