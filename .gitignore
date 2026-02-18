@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+.cursor/
+
+# Variáveis de ambiente (não commitar)
+.env
+.env.local
+.env.*.local
