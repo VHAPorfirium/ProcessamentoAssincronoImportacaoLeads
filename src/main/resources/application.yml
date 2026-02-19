@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: ProcessamentoAssincronoImportacaoLeads
+  datasource:
+    url: jdbc:mysql://localhost:3306/${DB_NAME:AsynchronousProcessingLeadImport}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+  cloud:
+    aws:
+      region:
+        static: ${AWS_REGION}
+      s3:
+        bucket: ${AWS_S3_BUCKET_LEADS}
+      sqs:
+        queue-url: ${AWS_SQS_QUEUE_URL}
+      sns:
+        topic-arn: ${AWS_SNS_TOPIC_ARN}
+
+logging:
+  level:
+    org.flywaydb: DEBUG
