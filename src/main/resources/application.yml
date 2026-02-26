@@ -27,3 +27,6 @@ spring:
 logging:
   level:
     org.flywaydb: DEBUG
+    com.Processamento.Assincrono.Importacao.Leads: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
