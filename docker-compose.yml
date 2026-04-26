@@ -1,0 +1,42 @@
+services:
+
+  # ─── MySQL ────────────────────────────────────────────────────────────────
+  mysql:
+    image: mysql:8.4
+    container_name: leads-mysql
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-AsynchronousProcessingLeadImport}
+      # Usando root diretamente via MYSQL_ROOT_PASSWORD.
+      # MYSQL_USER não pode ser "root" no MySQL 8 — root já existe por padrão.
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root_pass}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "--password=${DB_PASSWORD:-root_pass}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  # ─── Aplicação Spring Boot ─────────────────────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: leads-app
+    env_file:
+      - .env
+    environment:
+      # Sobrescreve o host do banco para apontar ao container MySQL.
+      # As demais variáveis (DB_NAME, DB_USER, DB_PASSWORD, AWS_*) vêm do .env.
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${DB_NAME:-AsynchronousProcessingLeadImport}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
