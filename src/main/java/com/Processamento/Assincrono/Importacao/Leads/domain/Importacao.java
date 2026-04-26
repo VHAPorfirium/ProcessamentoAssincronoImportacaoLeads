@@ -34,6 +34,9 @@ public class Importacao {
     @Column(name = "linhas_inseridas")
     private Integer linhasInseridas;
 
+    @Column(name = "linhas_ignoradas")
+    private Integer linhasIgnoradas;
+
     @Column(name = "erro_mensagem", columnDefinition = "TEXT")
     private String erroMensagem;
 
@@ -112,6 +115,14 @@ public class Importacao {
 
     public void setLinhasInseridas(Integer linhasInseridas) {
         this.linhasInseridas = linhasInseridas;
+    }
+
+    public Integer getLinhasIgnoradas() {
+        return linhasIgnoradas;
+    }
+
+    public void setLinhasIgnoradas(Integer linhasIgnoradas) {
+        this.linhasIgnoradas = linhasIgnoradas;
     }
 
     public String getErroMensagem() {
